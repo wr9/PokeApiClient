@@ -1,7 +1,7 @@
 export default {
 
     fetchPokemon: function (id) {
-        return fetch('https://pokeapi.co/api/v2/pokemon/' + id).then(response => {
+        return fetch('https://pokeapi.co/api/v2/pokemon/' + id + '/').then(response => {
             return response.json()
         })
     },
@@ -21,7 +21,7 @@ export default {
         let promise = new Promise((resolve, reject) => {
             let promises = [];
             let pokeList = [];
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 3; i++) {
                 promises.push(this.fetchPokemon(this.generateRandomPokeId()));
             }
             Promise.all(promises).then(responses => {
@@ -30,12 +30,19 @@ export default {
                         id: response.id,
                         name: response.name,
                         height: response.height,
-                        weight: response.weight
+                        weight: response.weight,
+                        types: response.types.map(type => type.type.name)
                     });
                 })
                 resolve(pokeList);
             })
         })
         return promise;
-    }
+    },
+
+    fetchTypes: function () {
+        return fetch('https://pokeapi.co/api/v2/type/').then(response => {
+            return response.json()
+        })
+    },
 }

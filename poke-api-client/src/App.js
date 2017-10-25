@@ -20,6 +20,14 @@ class App extends Component {
           max: ''
         },
         filter: FilteringService.filterByWeight
+      },
+      {
+        label: 'height',
+        options: {
+          min: '',
+          max: ''
+        },
+        filter: FilteringService.filterByHeight
       }
     ]
 
@@ -29,14 +37,33 @@ class App extends Component {
 
   componentDidMount() {
     console.log('mounting');
-    FetchingService.getRandomPokemon()
-      .then(response => {
-        this.setState({ pokemon: response })
+    let promises = [];
+
+    promises.push(FetchingService.getRandomPokemon());
+    promises.push(FetchingService.fetchTypes());
+
+    Promise.all(promises).then(response => {
+      let pokemon = response[0];
+      let types = response[1].results.map(type => {
+        return {
+          name: type.name,
+          selected: false
+        }
+      });
+
+      let filters = this.state.filters;
+      filters.push({
+        label: 'type',
+        options: types,
+        filter: FilteringService.filterByType
       })
+
+      this.setState({ pokemon: pokemon, filters: filters })
+    })
   }
 
   handleChange(changedFilter) {
-    let filters = JSON.parse(JSON.stringify(this.state.filters));
+    let filters = this.state.filters
     let changedFilterIndex = filters.findIndex(filter => filter.label === changedFilter.label)
     filters[changedFilterIndex] = changedFilter;
     this.setState({ filters: filters });
@@ -54,7 +81,7 @@ class App extends Component {
     return (
       <div>
         <FiltersMenu filters={this.state.filters} handleChange={this.handleChange} />
-        <PokeResultsList pokemon={this.filterPokemon(this.state.pokemon)} filters={this.state.filters} />
+        <PokeResultsList pokemon={this.filterPokemon(this.state.pokemon)} />
       </div>
     );
   }
