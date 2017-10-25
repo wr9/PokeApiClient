@@ -18,7 +18,12 @@ export default {
     },
 
     filterByMoves: function (pokemon, options) {
-        return pokemon.filter(pokemon => !options.minCount || pokemon.moves.length >= options.minCount);
+        let selectedMoves = options.moves.filter(move => move.selected).map(move => move.name);
+        let filteredPokemon = pokemon.filter(pokemon => !options.minCount || pokemon.moves.length >= options.minCount);
+        selectedMoves.forEach(move => {
+            filteredPokemon = filteredPokemon.filter(pokemon => pokemon.moves.includes(move));
+        })
+        return filteredPokemon;
     },
 
 }

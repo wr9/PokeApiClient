@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import PokeResultsList from './components/PokeResultsList';
 import FiltersMenu from './components/FiltersMenu';
 
-import FetchingService from './services/FetchingService'
-import FilteringService from './services/FilteringService'
+import FetchingService from './services/FetchingService';
+import FilteringService from './services/FilteringService';
 
 import './App.css';
 
@@ -28,17 +28,10 @@ class App extends Component {
           max: ''
         },
         filter: FilteringService.filterByHeight
-      },
-      {
-        label: 'moves',
-        options: {
-          minCount: ''
-        },
-        filter: FilteringService.filterByMoves
       }
     ]
 
-    this.state = { pokemon: [], filters: filters }
+    this.state = { pokemon: [], filters: filters };
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -48,6 +41,7 @@ class App extends Component {
 
     promises.push(FetchingService.getRandomPokemon());
     promises.push(FetchingService.fetchTypes());
+    promises.push(FetchingService.fetchMoves());
 
     Promise.all(promises).then(response => {
       let pokemon = response[0];
@@ -57,21 +51,35 @@ class App extends Component {
           selected: false
         }
       });
+      let moves = response[2].results.map(move => {
+        return {
+          name: move.name,
+          selected: false
+        }
+      });
 
       let filters = this.state.filters;
       filters.push({
         label: 'type',
         options: types,
         filter: FilteringService.filterByType
-      })
+      });
+      filters.push({
+        label: 'moves',
+        options: {
+          moves: moves,
+          minCount: '',
+        },
+        filter: FilteringService.filterByMoves
+      });
 
-      this.setState({ pokemon: pokemon, filters: filters })
+      this.setState({ pokemon: pokemon, filters: filters });
     })
   }
 
   handleChange(changedFilter) {
-    let filters = this.state.filters
-    let changedFilterIndex = filters.findIndex(filter => filter.label === changedFilter.label)
+    let filters = this.state.filters;
+    let changedFilterIndex = filters.findIndex(filter => filter.label === changedFilter.label);
     filters[changedFilterIndex] = changedFilter;
     this.setState({ filters: filters });
   }

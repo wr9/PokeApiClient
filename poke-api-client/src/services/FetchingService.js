@@ -47,4 +47,10 @@ export default {
             return response.json()
         })
     },
+
+    fetchMoves: function () {
+        return fetch('https://pokeapi.co/api/v2/move/?limit=1000').then(response => {
+            return response.json()
+        })
+    },
 }
