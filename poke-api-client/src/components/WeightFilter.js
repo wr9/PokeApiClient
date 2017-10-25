@@ -10,7 +10,7 @@ class WeightFilter extends Component {
 
     handleChange(event) {
         let filter = this.props.filter;
-        filter[event.target.name] = event.target.value;
+        filter.options[event.target.name] = parseInt(event.target.value);
         this.props.handleChange(filter);
     }
 
@@ -18,8 +18,8 @@ class WeightFilter extends Component {
         return (
             <div>
                 <h1>Weight</h1>
-                <input type='number' name='min' value={this.props.filter.min} onChange={this.handleChange} placeholder='min weight' />
-                <input type='number' name='max' value={this.props.filter.max} onChange={this.handleChange} placeholder='max weight' />
+                <input type='number' name='min' value={this.props.filter.options.min} onChange={this.handleChange} placeholder='min weight' />
+                <input type='number' name='max' value={this.props.filter.options.max} onChange={this.handleChange} placeholder='max weight' />
             </div>
         );
     }
