@@ -17,7 +17,8 @@ class WeightFilter extends Component {
     render() {
         return (
             <div>
-                <h1>Weight</h1>
+                <h2>Weight</h2>
+                
                 <input type='number' name='min' value={this.props.filter.options.min} onChange={this.handleChange} placeholder='min weight' />
                 <input type='number' name='max' value={this.props.filter.options.max} onChange={this.handleChange} placeholder='max weight' />
             </div>
