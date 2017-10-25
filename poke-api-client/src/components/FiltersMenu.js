@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import WeightFilter from './WeightFilter';
-import HeightFilter from './HeightFilter';
-import TypeFilter from './TypeFilter';
+import WeightFilter from './filters/WeightFilter';
+import HeightFilter from './filters/HeightFilter';
+import TypeFilter from './filters/TypeFilter';
 
 class FiltersMenu extends Component {
 
