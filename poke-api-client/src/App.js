@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import PokeResultsList from './components/PokeResultsList';
 import FiltersMenu from './components/FiltersMenu';
 
-import FetchingService from './FetchingService'
-import FilteringService from './FilteringService'
+import FetchingService from './services/FetchingService'
+import FilteringService from './services/FilteringService'
 
 import './App.css';
 
