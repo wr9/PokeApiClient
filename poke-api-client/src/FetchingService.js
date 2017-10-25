@@ -31,7 +31,9 @@ export default {
                         name: response.name,
                         height: response.height,
                         weight: response.weight,
-                        types: response.types.map(type => type.type.name)
+                        types: response.types.map(type => type.type.name),
+                        moves: response.moves.map(move => move.move.name),
+                        abilities: response.abilities.map(ability => ability.ability.name)
                     });
                 })
                 resolve(pokeList);
