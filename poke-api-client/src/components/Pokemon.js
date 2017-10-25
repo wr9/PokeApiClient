@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 class Pokemon extends Component {
 
     render() {
+        console.log(this.props.pokemon)
         return (
             <div>
                 Name: {this.props.pokemon.name}
@@ -14,6 +15,7 @@ class Pokemon extends Component {
                         {type}
                     </div>
                 )}
+                No of moves: {this.props.pokemon.moves.length}
             </div>
         );
     }

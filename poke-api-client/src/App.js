@@ -28,6 +28,13 @@ class App extends Component {
           max: ''
         },
         filter: FilteringService.filterByHeight
+      },
+      {
+        label: 'moves',
+        options: {
+          minCount: ''
+        },
+        filter: FilteringService.filterByMoves
       }
     ]
 

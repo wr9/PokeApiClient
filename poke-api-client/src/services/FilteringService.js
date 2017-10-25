@@ -15,6 +15,10 @@ export default {
             filteredPokemon = filteredPokemon.filter(pokemon => pokemon.types.includes(type));
         })
         return filteredPokemon;
-    }
+    },
+
+    filterByMoves: function (pokemon, options) {
+        return pokemon.filter(pokemon => !options.minCount || pokemon.moves.length >= options.minCount);
+    },
 
 }
