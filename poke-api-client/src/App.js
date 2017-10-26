@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import PokeResultsList from './components/PokeResultsList';
 import FiltersMenu from './components/FiltersMenu';
+import GroupsMenu from './components/GroupsMenu';
 
 import FetchingService from './services/FetchingService';
 import FilteringService from './services/FilteringService';
@@ -28,12 +29,39 @@ class App extends Component {
           max: ''
         },
         filter: FilteringService.filterByHeight
+      },
+      {
+        label: 'numberOfMoves',
+        options: {
+          minNumberOfMoves: '',
+        },
+        filter: FilteringService.filterByNumberOfMoves
       }
     ]
 
-    this.state = { pokemon: [], filters: filters };
+    let groups = [
+      {
+        label: 'small',
+        filters: [
+          {
+            label: 'height',
+            options: [
+              {
+                name: 'max',
+                value: 80
+              }
+            ]
+          },
+        ],
+        selected: false
+      }
+    ]
+
+    this.state = { pokemon: [], filters: filters, groups: groups };
     this.handleChange = this.handleChange.bind(this);
   }
+
+  handleGroup
 
   componentDidMount() {
     console.log('mounting');
@@ -66,10 +94,7 @@ class App extends Component {
       });
       filters.push({
         label: 'moves',
-        options: {
-          moves: moves,
-          minCount: '',
-        },
+        options: moves,
         filter: FilteringService.filterByMoves
       });
 
@@ -95,6 +120,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <GroupsMenu groups={this.state.groups}/>
         <FiltersMenu filters={this.state.filters} handleChange={this.handleChange} />
         <PokeResultsList pokemon={this.filterPokemon(this.state.pokemon)} />
       </div>

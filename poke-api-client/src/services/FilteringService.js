@@ -17,9 +17,13 @@ export default {
         return filteredPokemon;
     },
 
+    filterByNumberOfMoves: function (pokemon, options) {
+        return pokemon.filter(pokemon => !options.minNumberOfMoves || pokemon.moves.length >= options.minNumberOfMoves);
+    },
+
     filterByMoves: function (pokemon, options) {
-        let selectedMoves = options.moves.filter(move => move.selected).map(move => move.name);
-        let filteredPokemon = pokemon.filter(pokemon => !options.minCount || pokemon.moves.length >= options.minCount);
+        let selectedMoves = options.filter(move => move.selected).map(move => move.name);
+        let filteredPokemon = pokemon;
         selectedMoves.forEach(move => {
             filteredPokemon = filteredPokemon.filter(pokemon => pokemon.moves.includes(move));
         })
