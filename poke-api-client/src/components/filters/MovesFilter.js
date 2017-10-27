@@ -17,16 +17,16 @@ class MovesFilter extends Component {
 
     handleAutocompleteSelect(moveName) {
         let filter = this.props.filter;
-        let selectedMoveIndex = filter.options.findIndex(move => move.name === moveName);
-        filter.options[selectedMoveIndex].selected = true;
+        let selectedMoveIndex = filter.options.findIndex(move => move.label === moveName);
+        filter.options[selectedMoveIndex].value = true;
         this.props.handleChange(filter);
         this.setState({ query: '' });
     }
 
     unselectMove(event) {
         let filter = this.props.filter;
-        let selectedMoveIndex = filter.options.findIndex(move => move.name === event.target.value);
-        filter.options[selectedMoveIndex].selected = false;
+        let selectedMoveIndex = filter.options.findIndex(move => move.label === event.target.value);
+        filter.options[selectedMoveIndex].value = false;
         this.props.handleChange(filter);
     }
 
@@ -42,10 +42,10 @@ class MovesFilter extends Component {
                             <input value={this.state.query} onChange={this.handleAutocompleteChange} placeholder="move" />
                             {this.state.query &&
                                 <div className="dropdown-content">
-                                    {this.props.filter.options.filter(move => move.name.includes(this.state.query) && !move.selected).map((move) =>
-                                        <div key={move.name}>
-                                            <div className='dropdown-content-element' onClick={() => this.handleAutocompleteSelect(move.name)}>
-                                                <div>{move.name}</div>
+                                    {this.props.filter.options.filter(move => move.label.includes(this.state.query) && !move.value).map((move) =>
+                                        <div key={move.label}>
+                                            <div className='dropdown-content-element' onClick={() => this.handleAutocompleteSelect(move.label)}>
+                                                <div>{move.label}</div>
                                             </div>
                                         </div>
                                     )}
@@ -53,19 +53,19 @@ class MovesFilter extends Component {
                             }
                         </div>
 
-                        {this.props.filter.options.filter(move => move.selected).length > 0 &&
+                        {this.props.filter.options.filter(move => move.value).length > 0 &&
                             <div>
                                 <h3>Selected filters</h3>
 
-                                {this.props.filter.options.filter(move => move.selected).map((move) =>
-                                    <div key={move.name}>
+                                {this.props.filter.options.filter(move => move.value).map((move) =>
+                                    <div key={move.label}>
                                         <div>
                                             <input
                                                 type="checkbox"
-                                                value={move.name}
-                                                checked={move.selected}
+                                                value={move.label}
+                                                checked={move.value}
                                                 onChange={this.unselectMove} />
-                                            {move.name}
+                                            {move.label}
                                         </div>
                                     </div>
                                 )}
