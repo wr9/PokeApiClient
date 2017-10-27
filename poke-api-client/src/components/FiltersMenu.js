@@ -11,6 +11,8 @@ class FiltersMenu extends Component {
         console.log('rendering')
         return (
             <div>
+                <h1>Filters</h1>
+
                 <WeightFilter filter={this.props.filters.find(filter => filter.label === 'weight')} handleChange={this.props.handleChange}/>
                 <HeightFilter filter={this.props.filters.find(filter => filter.label === 'height')} handleChange={this.props.handleChange}/>
                 <TypeFilter filter={this.props.filters.find(filter => filter.label === 'type')} handleChange={this.props.handleChange}/>

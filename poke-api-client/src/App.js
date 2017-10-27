@@ -41,14 +41,74 @@ class App extends Component {
 
     let groups = [
       {
-        label: 'small',
+        name: 'small',
         filters: [
           {
             label: 'height',
             options: [
               {
-                name: 'max',
+                label: 'max',
                 value: 80
+              }
+            ]
+          },
+        ],
+        selected: false
+      },
+      {
+        name: 'heavy',
+        filters: [
+          {
+            label: 'weight',
+            options: [
+              {
+                label: 'min',
+                value: 200
+              }
+            ]
+          },
+        ],
+        selected: false
+      },
+      {
+        name: 'powerful',
+        filters: [
+          {
+            label: 'numberOfMoves',
+            options: [
+              {
+                label: 'minNumberOfMoves',
+                value: 50
+              }
+            ]
+          },
+        ],
+        selected: false
+      },
+      {
+        name: 'flying',
+        filters: [
+          {
+            label: 'type',
+            options: [
+              {
+                label: 'flying',
+                value: true
+              }
+            ]
+          },
+        ],
+        selected: false
+      },
+      {
+        name: 'biting',
+        filters: [
+          {
+            label: 'moves',
+            options: [
+              {
+                label: 'bite',
+                value: true
               }
             ]
           },
@@ -59,9 +119,8 @@ class App extends Component {
 
     this.state = { pokemon: [], filters: filters, groups: groups };
     this.handleChange = this.handleChange.bind(this);
+    this.handleGroupChange = this.handleGroupChange.bind(this);
   }
-
-  handleGroup
 
   componentDidMount() {
     console.log('mounting');
@@ -109,6 +168,29 @@ class App extends Component {
     this.setState({ filters: filters });
   }
 
+  handleGroupChange(changedGroup) {
+    let groups = this.state.groups;
+    let changedGroupIndex = groups.findIndex(group => group.name === changedGroup.name);
+    groups[changedGroupIndex].selected = !groups[changedGroupIndex].selected;
+
+    let filters = this.state.filters;
+    changedGroup.filters.forEach(groupFilter => {
+      let filterIndex = filters.findIndex(filter => filter.label === groupFilter.label);
+      groupFilter.options.forEach(groupFilterOption => {
+        if (Array.isArray(filters[filterIndex].options)) {
+          let optionIndex = filters[filterIndex].options.findIndex(option => option.name === groupFilterOption.label);
+          filters[filterIndex].options[optionIndex].selected = groupFilterOption.value;
+        }
+        else {
+          console.log(groupFilterOption.value && changedGroup.selected)
+          filters[filterIndex].options[groupFilterOption.label] = groupFilterOption.value;
+        }
+      })
+    })
+
+    this.setState({ filters: filters, groups: groups });
+  }
+
   filterPokemon() {
     let filteredPokemon = this.state.pokemon;
     this.state.filters.forEach(filter => {
@@ -120,7 +202,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <GroupsMenu groups={this.state.groups}/>
+        <GroupsMenu groups={this.state.groups} handleChange={this.handleGroupChange} />
         <FiltersMenu filters={this.state.filters} handleChange={this.handleChange} />
         <PokeResultsList pokemon={this.filterPokemon(this.state.pokemon)} />
       </div>
