@@ -30,18 +30,8 @@ class App extends Component {
 
     Promise.all(promises).then(response => {
       let pokemon = response[0];
-      let types = response[1].results.map(type => {
-        return {
-          label: type.name,
-          value: false
-        }
-      });
-      let moves = response[2].results.map(move => {
-        return {
-          label: move.name,
-          value: false
-        }
-      });
+      let types = response[1];
+      let moves = response[2];
 
       let filters = this.state.filters;
       filters.push({
@@ -59,18 +49,13 @@ class App extends Component {
     })
   }
 
-  handleChange(changedFilter) {
-    let filters = this.state.filters;
-    let changedFilterIndex = filters.findIndex(filter => filter.label === changedFilter.label);
-    filters[changedFilterIndex] = changedFilter;
-    this.checkSelectedGroups(changedFilter);
-    this.setState({ filters: filters });
+  handleChange(changedFilter, changedOption, value) {
+    changedOption.value = value;
+    this.setState({ filters: this.state.filters, groups: this.checkSelectedGroups(changedFilter) });
   }
 
   handleGroupChange(changedGroup) {
-    let groups = this.state.groups;
-    let changedGroupIndex = groups.findIndex(group => group.name === changedGroup.name);
-    groups[changedGroupIndex].selected = !groups[changedGroupIndex].selected;
+    changedGroup.selected = !changedGroup.selected;
 
     let filters = this.state.filters;
     changedGroup.filters.forEach(groupFilter => {
@@ -81,7 +66,7 @@ class App extends Component {
       })
     })
 
-    this.setState({ filters: filters, groups: groups });
+    this.setState({ filters: filters, groups: this.state.groups });
   }
 
   checkSelectedGroups(changedFilter) {
@@ -95,6 +80,8 @@ class App extends Component {
         }
       })
     })
+
+    return groups;
   }
 
   filterPokemon() {
@@ -108,13 +95,20 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div style={{ float: 'left' }}>
-          <GroupsMenu groups={this.state.groups} handleChange={this.handleGroupChange} />
-          <FiltersMenu filters={this.state.filters} handleChange={this.handleChange} />
-        </div>
-        <div style={{}}>
-          <PokeResultsList pokemon={this.filterPokemon(this.state.pokemon)} />
-        </div>
+        {this.state.pokemon.length > 0 ?
+          <div>
+            <div style={{ float: 'left' }}>
+              <GroupsMenu groups={this.state.groups} handleChange={this.handleGroupChange} />
+              <FiltersMenu filters={this.state.filters} handleChange={this.handleChange} />
+            </div>
+            <div style={{}}>
+              <PokeResultsList pokemon={this.filterPokemon(this.state.pokemon)} />
+            </div>
+          </div>
+          :
+          <h2>Loading</h2>
+        }
+
       </div>
     );
   }

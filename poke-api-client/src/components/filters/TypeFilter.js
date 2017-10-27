@@ -8,11 +8,8 @@ class TypeFilter extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(event) {
-        let filter = this.props.filter;
-        let changedOptionIndex = filter.options.findIndex(option => option.label === event.target.value);
-        filter.options[changedOptionIndex].value = !filter.options[changedOptionIndex].value;
-        this.props.handleChange(filter);
+    handleChange(option) {
+        this.props.handleChange(this.props.filter, option, !option.value);
     }
 
     render() {
@@ -28,7 +25,7 @@ class TypeFilter extends Component {
                                     type="checkbox"
                                     value={option.label}
                                     checked={option.value}
-                                    onChange={this.handleChange} />
+                                    onChange={() => this.handleChange(option)} />
                                 {option.label}
                             </div>
                         </div>

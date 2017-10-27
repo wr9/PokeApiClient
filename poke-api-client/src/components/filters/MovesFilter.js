@@ -15,19 +15,13 @@ class MovesFilter extends Component {
         this.setState({ query: event.target.value });
     }
 
-    handleAutocompleteSelect(moveName) {
-        let filter = this.props.filter;
-        let selectedMoveIndex = filter.options.findIndex(move => move.label === moveName);
-        filter.options[selectedMoveIndex].value = true;
-        this.props.handleChange(filter);
+    handleAutocompleteSelect(option) {
+        this.props.handleChange(this.props.filter, option, true);
         this.setState({ query: '' });
     }
 
-    unselectMove(event) {
-        let filter = this.props.filter;
-        let selectedMoveIndex = filter.options.findIndex(move => move.label === event.target.value);
-        filter.options[selectedMoveIndex].value = false;
-        this.props.handleChange(filter);
+    unselectMove(option) {
+        this.props.handleChange(this.props.filter, option, false);
     }
 
     render() {
@@ -44,7 +38,7 @@ class MovesFilter extends Component {
                                 <div className="dropdown-content">
                                     {this.props.filter.options.filter(move => move.label.includes(this.state.query) && !move.value).map((move) =>
                                         <div key={move.label}>
-                                            <div className='dropdown-content-element' onClick={() => this.handleAutocompleteSelect(move.label)}>
+                                            <div className='dropdown-content-element' onClick={() => this.handleAutocompleteSelect(move)}>
                                                 <div>{move.label}</div>
                                             </div>
                                         </div>
@@ -64,7 +58,7 @@ class MovesFilter extends Component {
                                                 type="checkbox"
                                                 value={move.label}
                                                 checked={move.value}
-                                                onChange={this.unselectMove} />
+                                                onChange={() => this.unselectMove(move)} />
                                             {move.label}
                                         </div>
                                     </div>

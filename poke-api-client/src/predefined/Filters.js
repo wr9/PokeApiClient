@@ -17,6 +17,7 @@ export default {
                     placeholder: 'max weight'
                 },
             ],
+            name: 'Weight',
             filter: FilteringService.filterByWeight
         },
         {
@@ -33,6 +34,7 @@ export default {
                     placeholder: 'max height'
                 },
             ],
+            name: 'Height',
             filter: FilteringService.filterByHeight
         },
         {
@@ -44,6 +46,7 @@ export default {
                     placeholder: 'min number of moves'
                 }
             ],
+            name: 'Number of moves',
             filter: FilteringService.filterByNumberOfMoves
         }
     ]
